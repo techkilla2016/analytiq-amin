@@ -1,6 +1,7 @@
 var fs = require('fs');
 const https = require('http');
 const auth_token = "BgvBbnOPUS"; 
+const axios = require('axios');
 
 const express = require('express');
 const path = require('path');
@@ -75,34 +76,39 @@ app.get('/reports.html', function(req, res) {
   res.sendFile(path.join(__dirname, '/dummy.html'));
  });
 
-app.get('/data',function(req2,res2){
+app.get('/data',async function(req2,res2){
 
   if(req2.query.token == auth_token)
   {
-  https.get(req2.query.url, res => {
-      let data = [];
-      const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
-      console.log('Status Code:', res.statusCode);
-      console.log('Date in Response header:', headerDate);
+ // https.get(req2.query.url, res => {
+   //   let data = [];
+    //   const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
+    //   console.log('Status Code:', res.statusCode);
+    //   console.log('Date in Response header:', headerDate);
     
-      res.on('data', chunk => {
-        data.push(chunk);
-      });
+    //   res.on('data', chunk => {
+    //     data.push(chunk);
+    //   });
     
-      res.on('end', () => {
-        console.log('Response ended: ');
-         const users = JSON.parse(Buffer.concat(data).toString());
+    //   res.on('end', () => {
+    //     console.log('Response ended: ');
+    //      const users = JSON.parse(Buffer.concat(data).toString());
     
-        // for(user of users) {
-        //   console.log(`Got user with id: ${user.id}, name: ${user.name}`);
-        // }
-        res2.setHeader('Content-Type', 'application/json');
-        res2.end(JSON.stringify(users));
-      });
-    }).on('error', err => {
-      console.log('Error: ', err.message);
-    });
+    //     // for(user of users) {
+    //     //   console.log(`Got user with id: ${user.id}, name: ${user.name}`);
+    //     // }
+    //     res2.setHeader('Content-Type', 'application/json');
+    //     res2.end(JSON.stringify(users));
+    //   });
+    // }).on('error', err => {
+    //   console.log('Error: ', err.message);
+    // });
 
+    const response = await axios.get(req2.query.url, {
+    });
+    
+    res2.setHeader('Content-Type', 'application/json');
+    res2.end(JSON.stringify(response.data));
    
   }else
   {
