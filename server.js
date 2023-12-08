@@ -1,5 +1,5 @@
 var fs = require('fs');
-const https = require('https');
+const https = require('http');
 const auth_token = "BgvBbnOPUS"; 
 const axios = require('axios');
 
@@ -12,10 +12,10 @@ const port = process.env.PORT || 8080;
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-var options = {
-  key: fs.readFileSync('./ssl/private.key'),
-  cert: fs.readFileSync('./ssl/certificate.crt'),
-};
+// var options = {
+//   key: fs.readFileSync('./ssl/private.key'),
+//   cert: fs.readFileSync('./ssl/certificate.crt'),
+// };
 
 
 
@@ -118,7 +118,7 @@ app.get('/data',async function(req2,res2){
 
 //app.listen(port);
 
-var server = https.createServer(options,app).listen(port, function(){
+var server = https.createServer(app).listen(port, function(){
   console.log("Express server listening on port " + port);
 });
 
